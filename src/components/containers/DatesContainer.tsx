@@ -1,11 +1,26 @@
+import { useState } from "react";
 import { DateType } from "../../types/date.types";
 
 type DatesContainerProps = {
   dates: DateType[];
   deleteHandler: Function;
+  addTimeHandler: Function;
 };
 
-const DatesContainer = ({ dates, deleteHandler }: DatesContainerProps) => {
+const DatesContainer = ({
+  dates,
+  deleteHandler,
+  addTimeHandler,
+}: DatesContainerProps) => {
+  const [isAddPlaceholderVisible, setIsAddPlaceholderVisible] = useState({
+    dateId: 0,
+    isVisible: false,
+  });
+
+  const addTimePlaceholder = (dateId: number, isVisible: boolean) => {
+    setIsAddPlaceholderVisible({ dateId, isVisible });
+  };
+
   return (
     <div style={{ height: "450px", display: "flex", overflow: "auto" }}>
       {dates &&
@@ -43,7 +58,11 @@ const DatesContainer = ({ dates, deleteHandler }: DatesContainerProps) => {
                   margin: "5px 5px",
                   display: "flex",
                   flexDirection: "column",
+                  border: "1px solid red",
                 }}
+                id="timeslotsContainer"
+                onMouseEnter={() => addTimePlaceholder(date.id, true)}
+                onMouseLeave={() => addTimePlaceholder(date.id, false)}
               >
                 {date.timeSlots.map((timeSlot) => (
                   <button
@@ -67,6 +86,10 @@ const DatesContainer = ({ dates, deleteHandler }: DatesContainerProps) => {
                     </span>
                   </button>
                 ))}
+                {isAddPlaceholderVisible.dateId == date.id &&
+                  isAddPlaceholderVisible.isVisible && (
+                    <button onClick={() => addTimeHandler(date.id)}>+</button>
+                  )}
               </div>
             </div>
           );

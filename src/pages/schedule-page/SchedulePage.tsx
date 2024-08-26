@@ -83,6 +83,24 @@ const SchedulePage = () => {
     );
   };
 
+  const addTime = (dateId: number) => {
+    setAllDates((prevState) =>
+      prevState.map((date) => {
+        if (date.id == dateId) {
+          return {
+            ...date,
+            timeSlots: [
+              ...date.timeSlots,
+              { id: date.timeSlots.length, time: "9:00" },
+            ],
+          };
+        }
+
+        return date;
+      })
+    );
+  };
+
   let isResetButtonDisabled = allDates.some((date) => date.timeSlots.length);
 
   let isUploadButtonDisabled = allDates.every(
@@ -114,6 +132,7 @@ const SchedulePage = () => {
       <DatesContainer
         dates={allDates}
         deleteHandler={removeTimeSlotHandler}
+        addTimeHandler={addTime}
       ></DatesContainer>
 
       <ActionButtonsContainer>

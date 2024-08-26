@@ -1,14 +1,7 @@
-import { DateType } from "../types/date.types";
-
-// :TODO Populate the initial state from the json file
-export const getDates = (
-  startDate: Date,
-  endDate: Date,
-  allDates: DateType[]
-) => {
+// :TODO Persist times when changing the dates
+export const getDates = (startDate: Date, endDate: Date) => {
   const dates = [];
 
-  // Strip hours minutes seconds etc.
   let currentDate = new Date(
     startDate.getFullYear(),
     startDate.getMonth(),
@@ -21,7 +14,7 @@ export const getDates = (
     let dateObj = {
       id: index,
       date: currentDate,
-      timeSlots: [{ id: 0, time: "9:00" }],
+      timeSlots: [],
     };
     dates.push(dateObj);
 

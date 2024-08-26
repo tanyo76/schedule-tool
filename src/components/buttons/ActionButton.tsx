@@ -1,9 +1,4 @@
-type ActionButtonType = {
-  text: string;
-  color?: string;
-  onClickHandler: Function;
-  disabled?: boolean;
-};
+import { ActionButtonType } from "../../types/prop.types";
 
 const ActionButton = ({
   text,

@@ -1,7 +1,5 @@
 const DateInput = ({ label }: any) => {
-  const onDateChangeHandler = (e: any) => {
-    console.log(label, e.target.value);
-  };
+  const onDateChangeHandler = (e: any) => {};
   return (
     <div>
       <label>{label}</label>

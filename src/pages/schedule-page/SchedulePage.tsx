@@ -4,30 +4,19 @@ import ActionButton from "../../components/buttons/ActionButton";
 import ActionButtonsContainer from "../../components/containers/ActionButtonsContainer";
 import DatesContainer from "../../components/containers/DatesContainer";
 import { getDates } from "../../utils/date";
-import * as datesData from "../../data/dates.json";
-import { DateType } from "../../types/date.types";
+import { DateType } from "../../types/app.types";
+import { downloadFile } from "../../utils/download";
+import SuccessfulUploadModal from "../../components/modals/SuccessfulUploadModal";
+import { ActionsTypes, useAppContext } from "../../context/AppContext";
 
 const SchedulePage = () => {
-  // First check json dates
-  let datesInputJson = JSON.parse(JSON.stringify(datesData));
-  let datesJson = datesInputJson?.dates?.map((dateObject: DateType) => ({
-    ...dateObject,
-    date: new Date(dateObject.date),
-  }));
-
-  //   Input Dates
-  const [dates, setDates] = useState({
-    startDate: datesInputJson?.startDate ? datesInputJson?.startDate : "",
-    endDate: datesInputJson?.endDate ? datesInputJson?.endDate : "",
-  });
-
-  //   All dates range
-  const [allDates, setAllDates] = useState<DateType[]>(datesJson);
+  const { isSuccessUploadModalShown, dispatch, startDate, endDate, dates } =
+    useAppContext() as any;
 
   const changeDateHandler = (e: any) => {
-    const dateString = e.target.value;
+    const value = e.target.value;
     const name = e.target.name;
-    setDates((prevState) => ({ ...prevState, [name]: dateString }));
+    dispatch({ type: ActionsTypes.CHANGEINPUTDATES, payload: { name, value } });
   };
 
   const calculateDates = (e: any) => {
@@ -35,102 +24,68 @@ const SchedulePage = () => {
   };
 
   useEffect(() => {
-    // :TODO Change logic to only add a column
-    if (
-      dates.startDate !== datesInputJson?.startDate ||
-      dates.endDate !== datesInputJson?.endDate
-    ) {
-      console.log("test");
-      const datesResult = getDates(
-        new Date(dates.startDate),
-        new Date(dates.endDate),
-        allDates
-      );
+    const datesResult = getDates(new Date(startDate), new Date(endDate));
 
-      setAllDates(datesResult);
-    }
-  }, [dates]);
+    dispatch({ type: ActionsTypes.SETDATES, payload: datesResult });
+  }, [startDate, endDate]);
 
   const uploadHandler = async () => {
     const uploadObject = {
-      startDate: dates.startDate,
-      endDate: dates.endDate,
-      dates: allDates,
+      startDate: startDate,
+      endDate: endDate,
+      dates,
     };
 
-    const jsonObject = JSON.stringify(uploadObject);
-    console.log(jsonObject);
-    // :TODO Write to the dates.json file
+    downloadFile(uploadObject);
+    dispatch({ type: ActionsTypes.TOGGLESUCCESSMODAL });
   };
 
   const resetHandler = async () => {
-    setAllDates((prevState) =>
-      prevState.map((date) => ({ ...date, timeSlots: [] }))
-    );
+    dispatch({ type: ActionsTypes.RESETDATES });
   };
 
   const removeTimeSlotHandler = (dateId: number, timeSlotId: number) => {
-    console.log(dateId, timeSlotId);
-    setAllDates((prevState) =>
-      prevState.map((date) => {
-        if (dateId == date.id) {
-          date.timeSlots = date.timeSlots.filter(
-            (timeslot) => timeslot.id !== timeSlotId
-          );
-        }
-        return date;
-      })
-    );
+    dispatch({
+      type: ActionsTypes.REMOVETIMESLOT,
+      payload: { dateId, timeSlotId },
+    });
   };
 
   const addTime = (dateId: number) => {
-    setAllDates((prevState) =>
-      prevState.map((date) => {
-        if (date.id == dateId) {
-          return {
-            ...date,
-            timeSlots: [
-              ...date.timeSlots,
-              { id: date.timeSlots.length, time: "9:00" },
-            ],
-          };
-        }
-
-        return date;
-      })
-    );
+    dispatch({ type: ActionsTypes.ADDTIME, payload: { dateId } });
   };
 
-  let isResetButtonDisabled = allDates.some((date) => date.timeSlots.length);
+  let isResetButtonDisabled = dates.some((date: any) => date.timeSlots.length);
 
-  let isUploadButtonDisabled = allDates.every(
-    (date) => date.timeSlots.length >= 1
-  );
+  let isUploadButtonDisabled =
+    dates.length && dates?.every((date: any) => date.timeSlots.length >= 1);
 
-  //   :TODO Disable autocomplete button
+  //  :TODO Disable autocomplete button
+  // :TODO Add autocomplete functionality
   let isAutocompleteDisabled = isResetButtonDisabled;
 
   return (
     <div className="container">
+      {isSuccessUploadModalShown && <SuccessfulUploadModal />}
       <h1>Create new Schedule</h1>
       <input
         type="date"
         onChange={changeDateHandler}
         name="startDate"
-        value={dates.startDate}
+        value={startDate}
       />
       <input
         type="date"
         onChange={calculateDates}
         name="endDate"
-        value={dates.endDate}
+        value={endDate}
       />
 
-      {allDates?.length > 0 && <p>{allDates.length} days</p>}
+      {dates.length > 0 && <p>{dates.length} days</p>}
       <hr />
 
       <DatesContainer
-        dates={allDates}
+        dates={dates}
         deleteHandler={removeTimeSlotHandler}
         addTimeHandler={addTime}
       ></DatesContainer>
@@ -150,6 +105,7 @@ const SchedulePage = () => {
           onClickHandler={uploadHandler}
           disabled={!isAutocompleteDisabled}
         />
+
         <ActionButton
           text="Upload"
           onClickHandler={uploadHandler}

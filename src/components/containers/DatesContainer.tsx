@@ -1,11 +1,5 @@
 import { useState } from "react";
-import { DateType } from "../../types/date.types";
-
-type DatesContainerProps = {
-  dates: DateType[];
-  deleteHandler: Function;
-  addTimeHandler: Function;
-};
+import { DatesContainerProps } from "../../types/prop.types";
 
 const DatesContainer = ({
   dates,

@@ -1,32 +1,31 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import ActionButton from "../../components/buttons/ActionButton";
 import ActionButtonsContainer from "../../components/containers/ActionButtonsContainer";
 import DatesContainer from "../../components/containers/DatesContainer";
 import { getDates } from "../../utils/date";
-import { DateType } from "../../types/app.types";
 import { downloadFile } from "../../utils/download";
 import SuccessfulUploadModal from "../../components/modals/SuccessfulUploadModal";
-import { ActionsTypes, useAppContext } from "../../context/AppContext";
+import { useAppContext } from "../../context/AppContext";
+import { ActionTypes } from "../../context/reducers/appReducer";
 
 const SchedulePage = () => {
-  const { isSuccessUploadModalShown, dispatch, startDate, endDate, dates } =
-    useAppContext() as any;
+  const {
+    isSuccessUploadModalShown,
+    dispatch,
+    startDate,
+    endDate,
+    dates,
+    actions,
+  } = useAppContext() as any;
 
-  const changeDateHandler = (e: any) => {
-    const value = e.target.value;
-    const name = e.target.name;
-    dispatch({ type: ActionsTypes.CHANGEINPUTDATES, payload: { name, value } });
-  };
-
-  const calculateDates = (e: any) => {
-    changeDateHandler(e);
-  };
+  const { addTime, resetHandler, changeDateHandler, removeTimeSlotHandler } =
+    actions;
 
   useEffect(() => {
     const datesResult = getDates(new Date(startDate), new Date(endDate));
 
-    dispatch({ type: ActionsTypes.SETDATES, payload: datesResult });
+    dispatch({ type: ActionTypes.SETDATES, payload: datesResult });
   }, [startDate, endDate]);
 
   const uploadHandler = async () => {
@@ -37,22 +36,7 @@ const SchedulePage = () => {
     };
 
     downloadFile(uploadObject);
-    dispatch({ type: ActionsTypes.TOGGLESUCCESSMODAL });
-  };
-
-  const resetHandler = async () => {
-    dispatch({ type: ActionsTypes.RESETDATES });
-  };
-
-  const removeTimeSlotHandler = (dateId: number, timeSlotId: number) => {
-    dispatch({
-      type: ActionsTypes.REMOVETIMESLOT,
-      payload: { dateId, timeSlotId },
-    });
-  };
-
-  const addTime = (dateId: number) => {
-    dispatch({ type: ActionsTypes.ADDTIME, payload: { dateId } });
+    dispatch({ type: ActionTypes.TOGGLESUCCESSMODAL });
   };
 
   let isResetButtonDisabled = dates.some((date: any) => date.timeSlots.length);
@@ -76,7 +60,7 @@ const SchedulePage = () => {
       />
       <input
         type="date"
-        onChange={calculateDates}
+        onChange={changeDateHandler}
         name="endDate"
         value={endDate}
       />

@@ -1,13 +1,9 @@
-import { ActionsTypes, useAppContext } from "../../context/AppContext";
+import { useAppContext } from "../../context/AppContext";
 import ActionButton from "../buttons/ActionButton";
 
 const SuccessfulUploadModal = () => {
-  const { dispatch } = useAppContext() as any;
+  const { actions } = useAppContext() as any;
 
-  const resetState = () => {
-    dispatch({ type: ActionsTypes.TOGGLESUCCESSMODAL });
-    dispatch({ type: ActionsTypes.CLEARSTATE });
-  };
   return (
     <div className="uploadModal">
       <div className="modalInnerContainer">
@@ -15,7 +11,7 @@ const SuccessfulUploadModal = () => {
         <ActionButton
           text="Create another plan"
           color="#E11BB6"
-          onClickHandler={resetState}
+          onClickHandler={actions.resetState}
         />
       </div>
     </div>

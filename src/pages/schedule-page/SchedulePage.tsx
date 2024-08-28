@@ -18,6 +18,7 @@ const SchedulePage = () => {
     actions,
     pagination,
     weekDates,
+    isAutocompleteAvailable,
   } = useAppContext() as any;
 
   const {
@@ -29,6 +30,7 @@ const SchedulePage = () => {
     previousWeekHandler,
     setWeekDates,
     setDates,
+    autocomplete,
   } = actions;
 
   useEffect(() => {
@@ -69,9 +71,10 @@ const SchedulePage = () => {
   let isUploadButtonDisabled =
     dates.length && dates?.every((date: any) => date.timeSlots.length >= 1);
 
-  //  :TODO Disable autocomplete button
-  // :TODO Add autocomplete functionality
-  let isAutocompleteDisabled = isResetButtonDisabled;
+  let autocompleteDisable =
+    !isAutocompleteAvailable ||
+    !isResetButtonDisabled ||
+    isUploadButtonDisabled;
 
   return (
     <div className="container">
@@ -145,8 +148,8 @@ const SchedulePage = () => {
         <ActionButton
           text="Autocomplete"
           color="#E11BB6"
-          onClickHandler={uploadHandler}
-          disabled={!isAutocompleteDisabled}
+          onClickHandler={autocomplete}
+          disabled={autocompleteDisable}
         />
 
         <ActionButton

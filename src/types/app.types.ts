@@ -24,4 +24,11 @@ export type PaginationState = {
   weekDates: DateType[];
 };
 
-export type AppState = DateObject & ModalsState & PaginationState;
+export type AutocompleteState = {
+  isAutocompleteAvailable: boolean;
+};
+
+export type AppState = DateObject &
+  ModalsState &
+  PaginationState &
+  AutocompleteState;

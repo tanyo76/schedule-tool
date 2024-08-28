@@ -10,6 +10,9 @@ export enum ActionTypes {
   TOGGLESUCCESSMODAL = "TOGGLESUCCESSMODAL",
   REMOVETIMESLOT = "REMOVETIMESLOT",
   CLEARSTATE = "CLEARSTATE",
+  AUTOCOMPLETE = "AUTOCOMPLETE",
+  TOGGLEAUTOCOMPLETE = "TOGGLEAUTOCOMPLETE",
+  RESETAUTOCOMPLETE = "RESETAUTOCOMPLETE",
 
   // Pagination state
   SETWEEKDATES = "SETWEEKDATES",
@@ -94,6 +97,36 @@ export const reducer = (state: AppState, action: Action) => {
       return {
         ...state,
         weekDates: payload,
+      };
+
+    case ActionTypes.TOGGLEAUTOCOMPLETE:
+      return {
+        ...state,
+        isAutocompleteAvailable: payload,
+      };
+
+    case ActionTypes.AUTOCOMPLETE:
+      const filledDates = state.dates.filter((date) => date.timeSlots?.length);
+
+      let startingIndex = -1;
+
+      const dates = state.dates.map((date) => {
+        if (!date.timeSlots.length) {
+          if (startingIndex < filledDates.length - 1) {
+            startingIndex = ++startingIndex;
+          } else if (startingIndex == filledDates.length - 1) {
+            startingIndex = 0;
+          }
+
+          return { ...date, timeSlots: filledDates[startingIndex].timeSlots };
+        }
+
+        return date;
+      });
+
+      return {
+        ...state,
+        dates,
       };
 
     case ActionTypes.CLEARSTATE:

@@ -1,5 +1,10 @@
-// :TODO Persist times when changing the dates
-export const getDates = (startDate: Date, endDate: Date) => {
+import { DateType } from "../types/app.types";
+
+export const getDates = (
+  startDate: Date,
+  endDate: Date,
+  existingDates: DateType[]
+) => {
   const dates = [];
 
   let currentDate = new Date(
@@ -11,10 +16,13 @@ export const getDates = (startDate: Date, endDate: Date) => {
   let index = 0;
 
   while (currentDate <= endDate) {
+    let existingDate = existingDates.filter((date) => date.id == index);
+    let timeSlots = existingDate[0]?.timeSlots;
+
     let dateObj = {
       id: index,
       date: currentDate,
-      timeSlots: [],
+      timeSlots: timeSlots || [],
     };
     dates.push(dateObj);
 

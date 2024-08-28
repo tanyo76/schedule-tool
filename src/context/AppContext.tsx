@@ -10,6 +10,7 @@ export const initialState: AppState = {
   isSuccessUploadModalShown: false,
   pagination: 0,
   weekDates: [],
+  isAutocompleteAvailable: true,
 };
 
 export const AppContext = createContext(initialState);
@@ -30,6 +31,7 @@ export const AppContextProvider = ({ children }: any) => {
 
   const resetHandler = async () => {
     dispatch({ type: ActionTypes.RESETDATES });
+    toggleAutocomplete(true);
   };
 
   const changeDateHandler = (e: any) => {
@@ -65,11 +67,24 @@ export const AppContextProvider = ({ children }: any) => {
   };
 
   const setDates = (startDate: string, endDate: string) => {
-    const datesResult = getDates(new Date(startDate), new Date(endDate));
+    const datesResult = getDates(
+      new Date(startDate),
+      new Date(endDate),
+      state.dates
+    );
 
     state.pagination = 0;
 
     dispatch({ type: ActionTypes.SETDATES, payload: datesResult });
+  };
+
+  const toggleAutocomplete = (payload: boolean) => {
+    dispatch({ type: ActionTypes.TOGGLEAUTOCOMPLETE, payload });
+  };
+
+  const autocomplete = () => {
+    dispatch({ type: ActionTypes.AUTOCOMPLETE });
+    toggleAutocomplete(false);
   };
 
   return (
@@ -88,6 +103,8 @@ export const AppContextProvider = ({ children }: any) => {
             previousWeekHandler,
             setWeekDates,
             setDates,
+            autocomplete,
+            toggleAutocomplete,
           },
         } as any
       }

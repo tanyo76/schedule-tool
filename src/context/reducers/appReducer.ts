@@ -10,6 +10,11 @@ export enum ActionTypes {
   TOGGLESUCCESSMODAL = "TOGGLESUCCESSMODAL",
   REMOVETIMESLOT = "REMOVETIMESLOT",
   CLEARSTATE = "CLEARSTATE",
+
+  // Pagination state
+  SETWEEKDATES = "SETWEEKDATES",
+  SETPAGINATIONNEXT = "SETPAGINATIONNEXT",
+  SETPAGINATIONPREVIOUS = "SETPAGINATIONPREVIOUS",
 }
 
 interface Action {
@@ -73,6 +78,24 @@ export const reducer = (state: AppState, action: Action) => {
           return date;
         }),
       };
+    case ActionTypes.SETPAGINATIONNEXT:
+      return {
+        ...state,
+        pagination: state.pagination + 1,
+      };
+
+    case ActionTypes.SETPAGINATIONPREVIOUS:
+      return {
+        ...state,
+        pagination: state.pagination - 1,
+      };
+
+    case ActionTypes.SETWEEKDATES:
+      return {
+        ...state,
+        weekDates: payload,
+      };
+
     case ActionTypes.CLEARSTATE:
       return initialState;
 

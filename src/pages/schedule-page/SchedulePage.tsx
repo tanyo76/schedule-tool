@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import ActionButton from "../../components/buttons/ActionButton";
 import ActionButtonsContainer from "../../components/containers/ActionButtonsContainer";
 import DatesContainer from "../../components/containers/DatesContainer";
-import { getDates } from "../../utils/date";
 import { downloadFile } from "../../utils/download";
 import SuccessfulUploadModal from "../../components/modals/SuccessfulUploadModal";
 import { useAppContext } from "../../context/AppContext";
@@ -17,16 +16,42 @@ const SchedulePage = () => {
     endDate,
     dates,
     actions,
+    pagination,
+    weekDates,
   } = useAppContext() as any;
 
-  const { addTime, resetHandler, changeDateHandler, removeTimeSlotHandler } =
-    actions;
+  const {
+    addTime,
+    resetHandler,
+    changeDateHandler,
+    removeTimeSlotHandler,
+    nextWeekHandler,
+    previousWeekHandler,
+    setWeekDates,
+    setDates,
+  } = actions;
 
   useEffect(() => {
-    const datesResult = getDates(new Date(startDate), new Date(endDate));
-
-    dispatch({ type: ActionTypes.SETDATES, payload: datesResult });
+    setDates(startDate, endDate);
   }, [startDate, endDate]);
+
+  const pages = Math.ceil(dates.length / 7);
+
+  useEffect(() => {
+    setWeekDates();
+  }, [pagination, dates]);
+
+  const arrowHandler = (e: any) => {
+    const name = e.target.name;
+
+    if (name == "next" && pagination < pages - 1) {
+      nextWeekHandler(pages);
+    }
+
+    if (name == "previous" && pagination > 0) {
+      previousWeekHandler();
+    }
+  };
 
   const uploadHandler = async () => {
     const uploadObject = {
@@ -52,24 +77,58 @@ const SchedulePage = () => {
     <div className="container">
       {isSuccessUploadModalShown && <SuccessfulUploadModal />}
       <h1>Create new Schedule</h1>
-      <input
-        type="date"
-        onChange={changeDateHandler}
-        name="startDate"
-        value={startDate}
-      />
-      <input
-        type="date"
-        onChange={changeDateHandler}
-        name="endDate"
-        value={endDate}
-      />
 
-      {dates.length > 0 && <p>{dates.length} days</p>}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <div>
+          <input
+            type="date"
+            onChange={changeDateHandler}
+            name="startDate"
+            value={startDate}
+          />
+          <input
+            type="date"
+            onChange={changeDateHandler}
+            name="endDate"
+            value={endDate}
+          />
+          {dates.length > 0 && (
+            <p>
+              {dates.length} {dates.length == 1 ? "day" : "days"}
+            </p>
+          )}
+        </div>
+
+        {dates.length > 0 && (
+          <div style={{ marginRight: "20px" }}>
+            <button
+              onClick={arrowHandler}
+              name="previous"
+              disabled={pagination == 0}
+            >
+              previous
+            </button>
+            <button
+              onClick={arrowHandler}
+              name="next"
+              disabled={pagination == pages - 1}
+            >
+              next
+            </button>
+          </div>
+        )}
+      </div>
+
       <hr />
 
       <DatesContainer
-        dates={dates}
+        dates={weekDates}
         deleteHandler={removeTimeSlotHandler}
         addTimeHandler={addTime}
       ></DatesContainer>

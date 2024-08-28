@@ -1,12 +1,15 @@
 import { createContext, useContext, useReducer } from "react";
 import { AppState } from "../types/app.types";
 import { ActionTypes, reducer } from "./reducers/appReducer";
+import { getDates } from "../utils/date";
 
 export const initialState: AppState = {
   startDate: "",
   endDate: "",
   dates: [],
   isSuccessUploadModalShown: false,
+  pagination: 0,
+  weekDates: [],
 };
 
 export const AppContext = createContext(initialState);
@@ -40,6 +43,35 @@ export const AppContextProvider = ({ children }: any) => {
     dispatch({ type: ActionTypes.CLEARSTATE });
   };
 
+  const nextWeekHandler = (pages: number) => {
+    dispatch({ type: ActionTypes.SETPAGINATIONNEXT });
+
+    dispatch({
+      type: ActionTypes.SETWEEKDATES,
+      payload: state.dates.slice(pages * 7, 7),
+    });
+  };
+
+  const previousWeekHandler = () => {
+    dispatch({ type: ActionTypes.SETPAGINATIONPREVIOUS });
+  };
+
+  const setWeekDates = () => {
+    const weekDates = state.dates.slice(
+      state.pagination * 7,
+      (state.pagination + 1) * 7
+    );
+    dispatch({ type: ActionTypes.SETWEEKDATES, payload: weekDates });
+  };
+
+  const setDates = (startDate: string, endDate: string) => {
+    const datesResult = getDates(new Date(startDate), new Date(endDate));
+
+    state.pagination = 0;
+
+    dispatch({ type: ActionTypes.SETDATES, payload: datesResult });
+  };
+
   return (
     <AppContext.Provider
       value={
@@ -52,6 +84,10 @@ export const AppContextProvider = ({ children }: any) => {
             removeTimeSlotHandler,
             addTime,
             resetState,
+            nextWeekHandler,
+            previousWeekHandler,
+            setWeekDates,
+            setDates,
           },
         } as any
       }

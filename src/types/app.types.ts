@@ -19,4 +19,9 @@ export type ModalsState = {
   isSuccessUploadModalShown: boolean;
 };
 
-export type AppState = DateObject & ModalsState;
+export type PaginationState = {
+  pagination: number;
+  weekDates: DateType[];
+};
+
+export type AppState = DateObject & ModalsState & PaginationState;

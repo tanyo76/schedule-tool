@@ -7,6 +7,7 @@ import { downloadFile } from "../../utils/download";
 import SuccessfulUploadModal from "../../components/modals/SuccessfulUploadModal";
 import { useAppContext } from "../../context/AppContext";
 import { ActionTypes } from "../../context/reducers/appReducer";
+import DatePicker from "react-datepicker";
 
 const SchedulePage = () => {
   const {
@@ -88,19 +89,41 @@ const SchedulePage = () => {
           justifyContent: "space-between",
         }}
       >
-        <div>
-          <input
-            type="date"
-            onChange={changeDateHandler}
-            name="startDate"
-            value={startDate}
-          />
-          <input
-            type="date"
-            onChange={changeDateHandler}
-            name="endDate"
-            value={endDate}
-          />
+        <div
+          style={{
+            display: "flex",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <label>Start-Date</label>
+            <DatePicker
+              onChange={(date) => changeDateHandler(date, "startDate")}
+              selected={startDate}
+              name="startDate"
+              className="date-picker"
+            />
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <label>End-Date</label>
+            <DatePicker
+              onChange={(date) => changeDateHandler(date, "endDate")}
+              selected={endDate}
+              name="endDate"
+              className="date-picker"
+            />
+          </div>
           {dates.length > 0 && (
             <p>
               {dates.length} {dates.length == 1 ? "day" : "days"}

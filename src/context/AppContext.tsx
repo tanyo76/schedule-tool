@@ -34,10 +34,11 @@ export const AppContextProvider = ({ children }: any) => {
     toggleAutocomplete(true);
   };
 
-  const changeDateHandler = (e: any) => {
-    const value = e.target.value;
-    const name = e.target.name;
-    dispatch({ type: ActionTypes.CHANGEINPUTDATES, payload: { name, value } });
+  const changeDateHandler = (date: Date, name: string) => {
+    dispatch({
+      type: ActionTypes.CHANGEINPUTDATES,
+      payload: { name, value: date },
+    });
   };
 
   const resetState = () => {

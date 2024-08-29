@@ -1,0 +1,80 @@
+.app-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.schedule-tool-container {
+  width: 1200px;
+  height: 785px;
+}
+
+.datepicker-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  label {
+    margin-bottom: 15px;
+    font-size: 17px;
+  }
+}
+
+.header-section {
+  border-bottom: 1px solid $darkerGray;
+  width: 1200px;
+  display: flex;
+  justify-content: space-between;
+
+  .datepickers-container {
+    display: flex;
+    margin-bottom: 10px;
+    gap: 10px;
+  }
+}
+
+.pagination-buttons-container {
+  align-self: flex-end;
+  margin-bottom: 10px;
+}
+
+.action-buttons-container {
+  display: flex;
+  justify-content: end;
+  width: 1200px;
+}
+
+.dates-container {
+  height: 450px;
+  display: flex;
+  overflow: auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.dates-inner-container {
+  width: 1200px;
+  display: flex;
+  overflow: auto;
+  align-items: center;
+  gap: 11.5px;
+}
+
+.date-info-container {
+  height: 44px;
+  text-align: center;
+}
+
+.date-container {
+  @include flex-col;
+  align-items: center;
+}
+
+.timeslots-container {
+  @include flex-col;
+  height: 286px;
+  width: 161px;
+  background-color: $lightgray;
+  margin: 5px 0px;
+}

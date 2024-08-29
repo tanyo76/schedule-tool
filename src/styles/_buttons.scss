@@ -1,0 +1,36 @@
+.pagination-button {
+  font-size: 40px;
+  cursor: pointer;
+  background-color: white;
+  border: none;
+}
+
+.actionButton {
+  width: 160px;
+  height: 48;
+  color: white;
+  border: none;
+  font-size: 20px;
+  padding: 15px;
+  margin-left: 10px;
+}
+
+.date-picker {
+  padding: 15px 0px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.add-time-button {
+  background-color: $darkGray;
+  margin-left: 0 !important;
+}
+
+.timeslot-button {
+  border: 1px solid $lila;
+  background-color: $white;
+  color: $lila;
+  font-size: 20px;
+  padding: 15px;
+  margin-bottom: 15px;
+}

@@ -12,3 +12,19 @@ export type ActionButtonType = {
   onClickHandler: Function;
   disabled?: boolean;
 };
+
+export type DatePickerProps = {
+  labelText: string;
+  handler: Function;
+  selectedValue: Date;
+  name: string;
+};
+
+export type ScheduledDatesProps = {
+  datesLength: number;
+};
+
+export type DateInfoProps = {
+  day: string;
+  dayOfTheWeek: string;
+};

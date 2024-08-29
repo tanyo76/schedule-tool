@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { DatesContainerProps } from "../../types/prop.types";
+import DateInfo from "../common/DateInfo";
 
 const DatesContainer = ({
   dates,
@@ -16,23 +17,8 @@ const DatesContainer = ({
   };
 
   return (
-    <div
-      style={{
-        height: "80vh",
-        display: "flex",
-        overflow: "auto",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <div
-        style={{
-          width: "1200px",
-          display: "flex",
-          overflow: "auto",
-          alignItems: "center",
-        }}
-      >
+    <section className="dates-container">
+      <div className="dates-inner-container">
         {dates &&
           dates.map((date) => {
             const day = date.date.toLocaleDateString("en", {
@@ -43,48 +29,16 @@ const DatesContainer = ({
             });
 
             return (
-              <div
-                key={date.id}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
+              <div key={date.id} className="date-container">
+                <DateInfo day={day} dayOfTheWeek={dayOfTheWeek} />
                 <div
-                  style={{
-                    height: "44px",
-                    textAlign: "center",
-                  }}
-                >
-                  <p style={{ fontWeight: "bold" }}>{day}</p>
-                  <p>{dayOfTheWeek}</p>
-                </div>
-                <div
-                  style={{
-                    height: "286px",
-                    width: "160px",
-                    backgroundColor: "#F5F5F5",
-                    margin: "5px 5px",
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
+                  className="timeslots-container"
                   id="timeslotsContainer"
                   onMouseEnter={() => addTimePlaceholder(date.id, true)}
                   onMouseLeave={() => addTimePlaceholder(date.id, false)}
                 >
                   {date.timeSlots.map((timeSlot) => (
-                    <button
-                      key={timeSlot.id}
-                      style={{
-                        border: "1px solid #E11BB6",
-                        backgroundColor: "white",
-                        color: "#E11BB6",
-                        fontSize: "20px",
-                        padding: "15px",
-                        marginBottom: "15px",
-                      }}
-                    >
+                    <button key={timeSlot.id} className="timeslot-button">
                       {timeSlot.time}
                       <span
                         style={{ marginLeft: "20px" }}
@@ -97,12 +51,7 @@ const DatesContainer = ({
                   {isAddPlaceholderVisible.dateId == date.id &&
                     isAddPlaceholderVisible.isVisible && (
                       <button
-                        className="actionButton"
-                        style={{
-                          backgroundColor: "#5C5C5C",
-                          border: "none",
-                          fontSize: "100",
-                        }}
+                        className="actionButton add-time-button"
                         onClick={() => addTimeHandler(date.id)}
                       >
                         Add Time
@@ -113,7 +62,7 @@ const DatesContainer = ({
             );
           })}
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -9,7 +9,7 @@ const ActionButton = ({
   return (
     <button
       disabled={disabled}
-      className={`actionButton ${disabled ? "opacity" : ""}`}
+      className={`actionButton ${disabled ? "opacity" : ""} modal-button`}
       style={{ backgroundColor: color }}
       onClick={() => onClickHandler()}
     >

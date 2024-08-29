@@ -7,7 +7,8 @@ import { downloadFile } from "../../utils/download";
 import SuccessfulUploadModal from "../../components/modals/SuccessfulUploadModal";
 import { useAppContext } from "../../context/AppContext";
 import { ActionTypes } from "../../context/reducers/appReducer";
-import DatePicker from "react-datepicker";
+import DatePickerWithLabel from "../../components/datepicker/DatePickerWithLabel";
+import ScheduledDatesLength from "../../components/containers/ScheduleDays";
 
 const SchedulePage = () => {
   const {
@@ -78,110 +79,80 @@ const SchedulePage = () => {
     isUploadButtonDisabled;
 
   return (
-    <div className="container">
+    <main className="app-container">
       {isSuccessUploadModalShown && <SuccessfulUploadModal />}
-      <h1>Create new Schedule</h1>
+      <div className="schedule-tool-container">
+        <header className="app-header">Create new Schedule</header>
 
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <label>Start-Date</label>
-            <DatePicker
-              onChange={(date) => changeDateHandler(date, "startDate")}
-              selected={startDate}
+        <section className="header-section">
+          <div className="datepickers-container">
+            <DatePickerWithLabel
+              labelText="Start-Date"
+              handler={changeDateHandler}
+              selectedValue={startDate}
               name="startDate"
-              className="date-picker"
             />
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <label>End-Date</label>
-            <DatePicker
-              onChange={(date) => changeDateHandler(date, "endDate")}
-              selected={endDate}
+            <DatePickerWithLabel
+              labelText="End-Date"
+              handler={changeDateHandler}
+              selectedValue={endDate}
               name="endDate"
-              className="date-picker"
             />
+            {dates.length > 0 && (
+              <ScheduledDatesLength datesLength={dates.length} />
+            )}
           </div>
+
           {dates.length > 0 && (
-            <p>
-              {dates.length} {dates.length == 1 ? "day" : "days"}
-            </p>
+            <div className="pagination-buttons-container">
+              <button
+                onClick={arrowHandler}
+                name="previous"
+                disabled={pagination == 0}
+                className="pagination-button"
+              >
+                &#8249;
+              </button>
+              <button
+                onClick={arrowHandler}
+                name="next"
+                disabled={pagination == pages - 1}
+                className="pagination-button"
+              >
+                &#8250;
+              </button>
+            </div>
           )}
-        </div>
+        </section>
 
-        {dates.length > 0 && (
-          <div style={{ marginRight: "20px" }}>
-            <button
-              onClick={arrowHandler}
-              name="previous"
-              disabled={pagination == 0}
-            >
-              previous
-            </button>
-            <button
-              onClick={arrowHandler}
-              name="next"
-              disabled={pagination == pages - 1}
-            >
-              next
-            </button>
-          </div>
-        )}
+        <DatesContainer
+          dates={weekDates}
+          deleteHandler={removeTimeSlotHandler}
+          addTimeHandler={addTime}
+        ></DatesContainer>
+
+        <ActionButtonsContainer>
+          <ActionButton
+            text="Reset"
+            onClickHandler={resetHandler}
+            disabled={!isResetButtonDisabled}
+          />
+
+          <ActionButton
+            text="Autocomplete"
+            color="#E11BB6"
+            onClickHandler={autocomplete}
+            disabled={autocompleteDisable}
+          />
+
+          <ActionButton
+            text="Upload"
+            onClickHandler={uploadHandler}
+            disabled={!isUploadButtonDisabled}
+          />
+        </ActionButtonsContainer>
       </div>
-
-      <hr />
-
-      <DatesContainer
-        dates={weekDates}
-        deleteHandler={removeTimeSlotHandler}
-        addTimeHandler={addTime}
-      ></DatesContainer>
-
-      <ActionButtonsContainer>
-        {/* Disabled if there are no timeslots */}
-        <ActionButton
-          text="Reset"
-          onClickHandler={resetHandler}
-          disabled={!isResetButtonDisabled}
-        />
-
-        {/* Disabled if there are no timeslots */}
-        <ActionButton
-          text="Autocomplete"
-          color="#E11BB6"
-          onClickHandler={autocomplete}
-          disabled={autocompleteDisable}
-        />
-
-        <ActionButton
-          text="Upload"
-          onClickHandler={uploadHandler}
-          disabled={!isUploadButtonDisabled}
-        />
-      </ActionButtonsContainer>
-    </div>
+    </main>
   );
 };
 

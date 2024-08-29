@@ -6,6 +6,9 @@ export const getDates = (
   existingDates: DateType[]
 ) => {
   const dates = [];
+  // :TODO If start date is changed, shift the whole schedule
+
+  // Add to start date, add to end date
 
   let currentDate = new Date(
     startDate.getFullYear(),

@@ -1,7 +1,5 @@
 const ActionButtonsContainer = ({ children }: any) => {
-  return (
-    <div style={{ display: "flex", justifyContent: "end" }}>{children}</div>
-  );
+  return <section className="action-buttons-container">{children}</section>;
 };
 
 export default ActionButtonsContainer;

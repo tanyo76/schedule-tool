@@ -24,13 +24,13 @@ const DatesContainer = ({
             const day = date.date.toLocaleDateString("en", {
               weekday: "long",
             });
-            const dayOfTheWeek = date.date.toLocaleDateString("en", {
+            const weekDate = date.date.toLocaleDateString("en", {
               dateStyle: "short",
             });
 
             return (
               <div key={date.id} className="date-container">
-                <DateInfo day={day} dayOfTheWeek={dayOfTheWeek} />
+                <DateInfo day={day} date={weekDate} />
                 <div
                   className="timeslots-container"
                   id="timeslotsContainer"

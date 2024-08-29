@@ -26,5 +26,5 @@ export type ScheduledDatesProps = {
 
 export type DateInfoProps = {
   day: string;
-  dayOfTheWeek: string;
+  date: string;
 };

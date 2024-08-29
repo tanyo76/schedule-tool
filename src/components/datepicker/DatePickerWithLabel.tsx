@@ -11,6 +11,7 @@ const DatePickerWithLabel = ({
     <div className="datepicker-container">
       <label>{labelText}</label>
       <DatePicker
+        dateFormat="dd.MM.yyyy"
         onChange={(date) => handler(date, name)}
         selected={selectedValue}
         className="date-picker"

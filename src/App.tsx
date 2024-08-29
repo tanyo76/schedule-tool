@@ -7,6 +7,14 @@ function App() {
     document.title = "Schedule Tool";
   }, []);
 
+  Date.prototype.toJSON = function () {
+    return (
+      new Date(this).toLocaleDateString("en-US") +
+      " " +
+      new Date(this).toLocaleTimeString("en-US")
+    );
+  };
+
   return (
     <AppContextProvider>
       <SchedulePage />

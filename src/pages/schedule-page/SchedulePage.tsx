@@ -9,6 +9,7 @@ import { useAppContext } from "../../context/AppContext";
 import { ActionTypes } from "../../context/reducers/appReducer";
 import DatePickerWithLabel from "../../components/datepicker/DatePickerWithLabel";
 import ScheduledDatesLength from "../../components/containers/ScheduleDays";
+import { DateType } from "../../types/app.types";
 
 const SchedulePage = () => {
   const {
@@ -65,9 +66,12 @@ const SchedulePage = () => {
 
   const uploadHandler = async () => {
     const uploadObject = {
-      startDate: startDate,
-      endDate: endDate,
-      dates,
+      startDate: new Date(startDate).toJSON(),
+      endDate: new Date(endDate).toJSON(),
+      dates: dates.map((date: DateType) => ({
+        ...date,
+        date: date.date.toJSON(),
+      })),
     };
 
     downloadFile(uploadObject);

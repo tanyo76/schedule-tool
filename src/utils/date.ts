@@ -6,10 +6,6 @@ export const getDates = (
   existingDates: DateType[]
 ) => {
   const dates = [];
-  // :TODO If start date is changed, shift the whole schedule
-
-  // Add to start date, add to end date
-
   let currentDate = new Date(
     startDate.getFullYear(),
     startDate.getMonth(),
@@ -43,7 +39,7 @@ export const getDates = (
 export const formatDate = (date: string) => {
   const dateObject = new Date(date);
   const weekDate = dateObject.getDate();
-  const month = dateObject.getMonth();
+  const month = dateObject.getMonth() + 1;
   const year = dateObject.getFullYear();
 
   return `${weekDate.toString().length < 2 ? "0" : ""}${weekDate}.${

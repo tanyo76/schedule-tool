@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from "react";
-import { AppState } from "../types/app.types";
+import { AppState, DateType } from "../types/app.types";
 import { ActionTypes, reducer } from "./reducers/appReducer";
 import { getDates } from "../utils/date";
 
@@ -79,6 +79,26 @@ export const AppContextProvider = ({ children }: any) => {
     dispatch({ type: ActionTypes.SETDATES, payload: datesResult });
   };
 
+  const setStartDateOnly = (startDateString: string, dates: DateType[]) => {
+    const startDate = new Date(startDateString);
+
+    if (dates.length) {
+      let currentDate = new Date(
+        startDate.getFullYear(),
+        startDate.getMonth(),
+        startDate.getDate()
+      );
+
+      let endDate = new Date(
+        startDate.getFullYear(),
+        startDate.getMonth(),
+        startDate.getDate() + dates.length - 1
+      );
+
+      setDates(currentDate.toString(), endDate.toString());
+    }
+  };
+
   const toggleAutocomplete = (payload: boolean) => {
     dispatch({ type: ActionTypes.TOGGLEAUTOCOMPLETE, payload });
   };
@@ -117,6 +137,7 @@ export const AppContextProvider = ({ children }: any) => {
             autocomplete,
             toggleAutocomplete,
             changeTimeHandler,
+            setStartDateOnly,
           },
         } as any
       }

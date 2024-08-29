@@ -34,11 +34,16 @@ const SchedulePage = () => {
     setDates,
     autocomplete,
     changeTimeHandler,
+    setStartDateOnly,
   } = actions;
 
   useEffect(() => {
     setDates(startDate, endDate);
-  }, [startDate, endDate]);
+  }, [endDate]);
+
+  useEffect(() => {
+    setStartDateOnly(startDate, dates);
+  }, [startDate]);
 
   const pages = Math.ceil(dates.length / 7);
 

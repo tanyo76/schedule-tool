@@ -14,6 +14,8 @@ export enum ActionTypes {
   TOGGLEAUTOCOMPLETE = "TOGGLEAUTOCOMPLETE",
   RESETAUTOCOMPLETE = "RESETAUTOCOMPLETE",
   CHANGETIME = "CHANGETIME",
+  SETENDDATE = "SETENDDATE",
+  SETSTARTDATE = "SETSTARTDATE",
 
   // Pagination state
   SETWEEKDATES = "SETWEEKDATES",
@@ -150,6 +152,11 @@ export const reducer = (state: AppState, action: Action) => {
         dates,
       };
 
+    case ActionTypes.SETENDDATE:
+      return { ...initialState, endDate: payload };
+
+    case ActionTypes.SETSTARTDATE:
+      return { ...initialState, startDate: payload };
     case ActionTypes.CLEARSTATE:
       return initialState;
 

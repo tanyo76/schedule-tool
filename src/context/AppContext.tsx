@@ -96,6 +96,7 @@ export const AppContextProvider = ({ children }: any) => {
       );
 
       setDates(currentDate.toString(), endDate.toString());
+      changeDateHandler(endDate, "endDate");
     }
   };
 

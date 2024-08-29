@@ -71,8 +71,14 @@ const SchedulePage = () => {
 
   let isResetButtonDisabled = dates.some((date: any) => date.timeSlots.length);
 
+  let doesAllTimeslostsHaveTimes = dates?.every((date: any) =>
+    date.timeSlots.every((timeslot: any) => timeslot.time.length)
+  );
+
   let isUploadButtonDisabled =
-    dates.length && dates?.every((date: any) => date.timeSlots.length >= 1);
+    dates.length &&
+    dates?.every((date: any) => date.timeSlots.length >= 1) &&
+    doesAllTimeslostsHaveTimes;
 
   let autocompleteDisable =
     !isAutocompleteAvailable ||

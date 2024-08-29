@@ -39,3 +39,14 @@ export const getDates = (
 
   return dates;
 };
+
+export const formatDate = (date: string) => {
+  const dateObject = new Date(date);
+  const weekDate = dateObject.getDate();
+  const month = dateObject.getMonth();
+  const year = dateObject.getFullYear();
+
+  return `${weekDate.toString().length < 2 ? "0" : ""}${weekDate}.${
+    month.toString().length < 2 ? "0" : ""
+  }${month}.${year}`;
+};

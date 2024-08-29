@@ -88,6 +88,16 @@ export const AppContextProvider = ({ children }: any) => {
     toggleAutocomplete(false);
   };
 
+  type ChangeTimeHandlerPayload = {
+    dateId: number;
+    timeslotId: number;
+    value: string;
+  };
+
+  const changeTimeHandler = (payload: ChangeTimeHandlerPayload) => {
+    dispatch({ type: ActionTypes.CHANGETIME, payload });
+  };
+
   return (
     <AppContext.Provider
       value={
@@ -106,6 +116,7 @@ export const AppContextProvider = ({ children }: any) => {
             setDates,
             autocomplete,
             toggleAutocomplete,
+            changeTimeHandler,
           },
         } as any
       }

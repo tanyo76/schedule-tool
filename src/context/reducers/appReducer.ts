@@ -13,6 +13,7 @@ export enum ActionTypes {
   AUTOCOMPLETE = "AUTOCOMPLETE",
   TOGGLEAUTOCOMPLETE = "TOGGLEAUTOCOMPLETE",
   RESETAUTOCOMPLETE = "RESETAUTOCOMPLETE",
+  CHANGETIME = "CHANGETIME",
 
   // Pagination state
   SETWEEKDATES = "SETWEEKDATES",
@@ -73,8 +74,28 @@ export const reducer = (state: AppState, action: Action) => {
               ...date,
               timeSlots: [
                 ...date.timeSlots,
-                { id: date.timeSlots.length, time: "9:00" },
+                { id: date.timeSlots.length, time: "09:00" },
               ],
+            };
+          }
+
+          return date;
+        }),
+      };
+    case ActionTypes.CHANGETIME:
+      return {
+        ...state,
+        dates: state.dates.map((date) => {
+          if (date.id == payload.dateId) {
+            return {
+              ...date,
+              timeSlots: date.timeSlots.map((timeslot) => {
+                if (timeslot.id == payload.timeslotId) {
+                  return { ...timeslot, time: payload.value };
+                }
+
+                return timeslot;
+              }),
             };
           }
 

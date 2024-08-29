@@ -6,14 +6,35 @@ const DatesContainer = ({
   dates,
   deleteHandler,
   addTimeHandler,
+  changeTimeHandler,
 }: DatesContainerProps) => {
   const [isAddPlaceholderVisible, setIsAddPlaceholderVisible] = useState({
     dateId: 0,
     isVisible: false,
+    timeslotId: null,
   });
 
   const addTimePlaceholder = (dateId: number, isVisible: boolean) => {
-    setIsAddPlaceholderVisible({ dateId, isVisible });
+    setIsAddPlaceholderVisible((prevState) => ({
+      ...prevState,
+      dateId,
+      isVisible,
+    }));
+  };
+
+  const onTimeChangeHandler = (e: any, dateId: number, timeslotId: number) => {
+    const value = e.target.value;
+    changeTimeHandler({ dateId, timeslotId, value });
+  };
+
+  const appendDeleteButton = (timeslotId: number | null) => {
+    setIsAddPlaceholderVisible(
+      (prevState) =>
+        ({
+          ...prevState,
+          timeslotId,
+        } as any)
+    );
   };
 
   return (
@@ -38,20 +59,37 @@ const DatesContainer = ({
                   onMouseLeave={() => addTimePlaceholder(date.id, false)}
                 >
                   {date.timeSlots.map((timeSlot) => (
-                    <button key={timeSlot.id} className="timeslot-button">
-                      {timeSlot.time}
-                      <span
-                        style={{ marginLeft: "20px" }}
-                        onClick={() => deleteHandler(date.id, timeSlot.id)}
-                      >
-                        X
-                      </span>
-                    </button>
+                    <div
+                      className="timeslot-button"
+                      key={timeSlot.id}
+                      onMouseEnter={() => appendDeleteButton(timeSlot.id)}
+                      onMouseLeave={() => appendDeleteButton(null)}
+                    >
+                      <input
+                        type="time"
+                        className="time-button"
+                        value={timeSlot.time}
+                        onChange={(e) =>
+                          onTimeChangeHandler(e, date.id, timeSlot.id)
+                        }
+                      />
+
+                      {isAddPlaceholderVisible.dateId == date.id &&
+                        isAddPlaceholderVisible.isVisible &&
+                        timeSlot.id == isAddPlaceholderVisible.timeslotId && (
+                          <span
+                            onClick={() => deleteHandler(date.id, timeSlot.id)}
+                            className="delete-time-button"
+                          >
+                            X
+                          </span>
+                        )}
+                    </div>
                   ))}
                   {isAddPlaceholderVisible.dateId == date.id &&
                     isAddPlaceholderVisible.isVisible && (
                       <button
-                        className="actionButton add-time-button"
+                        className="add-time-button"
                         onClick={() => addTimeHandler(date.id)}
                       >
                         Add Time

@@ -24,13 +24,42 @@
 .add-time-button {
   background-color: $darkGray;
   margin-left: 0 !important;
+  font-size: 20px;
+  padding: 15px;
+  border: none;
+  color: $white;
 }
 
 .timeslot-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  color: $lila;
   border: 1px solid $lila;
   background-color: $white;
-  color: $lila;
-  font-size: 20px;
-  padding: 15px;
   margin-bottom: 15px;
+}
+
+.time-button {
+  color: $lila;
+  border: none;
+  width: 100px;
+  padding: 10px;
+  font-size: 20px;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.delete-time-button {
+  cursor: pointer;
+  border: 2px solid $darkGray;
+  color: $darkGray;
+  border-radius: 50%;
+  padding: 5px;
+  width: 10px;
+  height: 10px;
+  display: flex;
+  align-items: center;
 }

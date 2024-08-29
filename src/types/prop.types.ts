@@ -4,6 +4,7 @@ export type DatesContainerProps = {
   dates: DateType[];
   deleteHandler: Function;
   addTimeHandler: Function;
+  changeTimeHandler: Function;
 };
 
 export type ActionButtonType = {

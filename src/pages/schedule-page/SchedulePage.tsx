@@ -33,6 +33,7 @@ const SchedulePage = () => {
     setWeekDates,
     setDates,
     autocomplete,
+    changeTimeHandler,
   } = actions;
 
   useEffect(() => {
@@ -129,6 +130,7 @@ const SchedulePage = () => {
           dates={weekDates}
           deleteHandler={removeTimeSlotHandler}
           addTimeHandler={addTime}
+          changeTimeHandler={changeTimeHandler}
         ></DatesContainer>
 
         <ActionButtonsContainer>
